@@ -19,19 +19,19 @@ const (
 	// ComponentPreview preview command
 	ComponentPreview = "preview"
 
-	// ImageKtShadow default shadow image
-	ImageKtShadow = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow"
-	// ImageKtRouter default router image
-	ImageKtRouter = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router"
-	// ImageKtNavigator default navigator image
-	ImageKtNavigator = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator"
-
 	//// ImageKtShadow default shadow image
-	//ImageKtShadow = "10.10.125.67/et/et-connect-shadow"
+	//ImageKtShadow = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow"
 	//// ImageKtRouter default router image
-	//ImageKtRouter = "10.10.125.67/et/et-connect-router"
+	//ImageKtRouter = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router"
 	//// ImageKtNavigator default navigator image
-	//ImageKtNavigator = "10.10.125.67/et/et-connect-navigator"
+	//ImageKtNavigator = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator"
+
+	// ImageKtShadow default shadow image
+	ImageKtShadow = "10.10.125.67/et/et-connect-shadow"
+	// ImageKtRouter default router image
+	ImageKtRouter = "10.10.125.67/et/et-connect-router"
+	// ImageKtNavigator default navigator image
+	ImageKtNavigator = "10.10.125.67/et/et-connect-navigator"
 
 	// ConnectModeShuttle sshuttle mode
 	ConnectModeShuttle = "sshuttle"

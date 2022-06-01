@@ -102,7 +102,7 @@ func Recover(serviceName string) error {
 			return recover.UnlockServiceOnly(svc)
 		}
 	}
-	log.Info().Msgf("Service %s neither exchanged nor meshed by kt, nothing would be done", serviceName)
+	log.Info().Msgf("Service %s neither exchanged nor meshed by et, nothing would be done", serviceName)
 	return nil
 }
 
