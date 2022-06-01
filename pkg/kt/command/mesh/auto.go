@@ -83,7 +83,7 @@ func AutoMesh(svc *coreV1.Service) error {
 	// Must after stuntman service and shadow service, otherwise will cause 'host not found in upstream' error
 	routerPodName := svc.Name + util.RouterPodSuffix
 	routerLabels := map[string]string{
-		util.KtRole:   util.RoleRouter,
+		util.KtRole: util.RoleRouter,
 	}
 	if err = createRouter(routerPodName, svc.Name, ports, routerLabels, versionMark); err != nil {
 		return err
@@ -121,21 +121,21 @@ func isNameUsable(name, meshVersion string, times int) error {
 			if opt.Get().Mesh.VersionMark != "" {
 				return fmt.Errorf("%s, please specify a different version mark", msg)
 			}
-			return fmt.Errorf( "%s, please retry or use '--versionMark' parameter to spcify an uniq one", msg)
+			return fmt.Errorf("%s, please retry or use '--versionMark' parameter to spcify an uniq one", msg)
 		}
 		log.Info().Msgf("Previous meshing pod for service '%s' not finished yet, waiting ...", name)
 		time.Sleep(3 * time.Second)
-		return isNameUsable(name, meshVersion, times + 1)
+		return isNameUsable(name, meshVersion, times+1)
 	}
 	return nil
 }
 
 func sanityCheck(svc *coreV1.Service) error {
 	if svc.Annotations != nil && svc.Annotations[util.KtSelector] != "" {
-		return fmt.Errorf("service %s should not have %s annotation, please try use 'ktctl recover %s' to restore it",
+		return fmt.Errorf("service %s should not have %s annotation, please try use 'et recover %s' to restore it",
 			svc.Name, util.KtSelector, svc.Name)
 	} else if svc.Spec.Selector[util.KtRole] != "" {
-		return fmt.Errorf("service %s should not point to kt pods, please try use 'ktctl recover %s' to restore it",
+		return fmt.Errorf("service %s should not point to kt pods, please try use 'et recover %s' to restore it",
 			svc.Name, svc.Name)
 	}
 	return nil

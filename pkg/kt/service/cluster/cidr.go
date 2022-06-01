@@ -28,12 +28,12 @@ func (k *Kubernetes) ClusterCidrs(namespace string) ([]string, error) {
 	apiServerIp := util.ExtractHostIp(opt.Store.RestConfig.Host)
 	log.Debug().Msgf("Using cluster ip %s", apiServerIp)
 	if apiServerIp != "" {
-		cidrs = removeCidrOf(cidrs, apiServerIp + "/32")
+		cidrs = removeCidrOf(cidrs, apiServerIp+"/32")
 	}
 
 	if opt.Get().Connect.IncludeIps != "" {
 		for _, ipRange := range strings.Split(opt.Get().Connect.IncludeIps, ",") {
-			if opt.Get().Connect.Mode == util.ConnectModeTun2Socks && isSingleIp(ipRange) {
+			if opt.Get().Connect.ConnectMode == util.ConnectModeTun2Socks && isSingleIp(ipRange) {
 				log.Warn().Msgf("Includes single IP '%s' is not allow in %s mode", ipRange, util.ConnectModeTun2Socks)
 			} else {
 				cidrs = append(cidrs, ipRange)
@@ -165,7 +165,7 @@ func calculateMinimalIpRange(ips []string) []string {
 }
 
 func binToIpRange(bins [32]int, withAlign bool) string {
-	ips := []string {"0", "0", "0", "0"}
+	ips := []string{"0", "0", "0", "0"}
 	mask := 0
 	end := false
 	for i := 0; i < 4; i++ {

@@ -11,7 +11,7 @@ import (
 	"time"
 )
 
-const logFilePrefix = "kt-"
+const logFilePrefix = "et-"
 
 var BackgroundLogger = io.Discard
 
@@ -58,5 +58,5 @@ func CleanBackgroundLogs() {
 
 // isExpired check whether file haven't been modified over 24 hours
 func isExpired(info fs.FileInfo) bool {
-	return info.ModTime().Unix() < time.Now().Unix() - (3600 * 24)
+	return info.ModTime().Unix() < time.Now().Unix()-(3600*24)
 }

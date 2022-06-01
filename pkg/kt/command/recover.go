@@ -18,13 +18,13 @@ import (
 // NewRecoverCommand return new recover command
 func NewRecoverCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "recover",
+		Use:   "recover",
 		Short: "Restore traffic of specified kubernetes service changed by exchange or mesh",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of service to recover is required")
 			} else if len(args) > 1 {
-				return fmt.Errorf("too many service name are spcified (%s), should be one", strings.Join(args, ",") )
+				return fmt.Errorf("too many service name are spcified (%s), should be one", strings.Join(args, ","))
 			}
 			opt.Get().Global.UseLocalTime = true
 			return general.Prepare()
@@ -32,7 +32,7 @@ func NewRecoverCommand() *cobra.Command {
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Recover(args[0])
 		},
-		Example: "ktctl recover [command options]",
+		Example: "et recover [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))

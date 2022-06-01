@@ -14,7 +14,7 @@ import (
 )
 
 var (
-	version = "dev"
+	version = "0.3.5"
 )
 
 func init() {
@@ -34,18 +34,19 @@ func main() {
 	cobra.EnableCommandSorting = false
 
 	var rootCmd = &cobra.Command{
-		Use:   "ktctl",
+		Use:     "et",
 		Version: version,
-		Short: "A utility tool to help you work with Kubernetes dev environment more efficiently",
+		Short:   "A utility tool to help you work with Kubernetes dev environment more efficiently",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return cmd.Help()
 		},
-		Example: "ktctl <command> [command options]",
+		Example: "et <command> [command options]",
 	}
 
 	rootCmd.AddCommand(command.NewConnectCommand())
 	rootCmd.AddCommand(command.NewExchangeCommand())
 	rootCmd.AddCommand(command.NewMeshCommand())
+	rootCmd.AddCommand(command.NewMeshDebugCommand())
 	rootCmd.AddCommand(command.NewPreviewCommand())
 	rootCmd.AddCommand(command.NewRecoverCommand())
 	rootCmd.AddCommand(command.NewCleanCommand())

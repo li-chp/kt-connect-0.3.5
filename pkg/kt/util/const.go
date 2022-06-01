@@ -7,13 +7,15 @@ const (
 	EnvKubeConfig = "KUBECONFIG"
 
 	// KubernetesToolkit name of this tool
-	KubernetesToolkit = "kt"
+	KubernetesToolkit = "et"
 	// ComponentConnect connect command
 	ComponentConnect = "connect"
 	// ComponentExchange exchange command
 	ComponentExchange = "exchange"
 	// ComponentMesh mesh command
 	ComponentMesh = "mesh"
+	// ComponentMesh mesh command
+	ComponentMeshDebug = "meshDebug"
 	// ComponentPreview preview command
 	ComponentPreview = "preview"
 
@@ -23,6 +25,13 @@ const (
 	ImageKtRouter = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-router"
 	// ImageKtNavigator default navigator image
 	ImageKtNavigator = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator"
+
+	//// ImageKtShadow default shadow image
+	//ImageKtShadow = "10.10.125.67/et/et-connect-shadow"
+	//// ImageKtRouter default router image
+	//ImageKtRouter = "10.10.125.67/et/et-connect-router"
+	//// ImageKtNavigator default navigator image
+	//ImageKtNavigator = "10.10.125.67/et/et-connect-navigator"
 
 	// ConnectModeShuttle sshuttle mode
 	ConnectModeShuttle = "sshuttle"
@@ -52,21 +61,21 @@ const (
 	// ControlBy label used for mark shadow pod
 	ControlBy = "control-by"
 	// KtTarget label used for service selecting shadow or route pod
-	KtTarget = "kt-target"
+	KtTarget = "et-target"
 	// KtRole label used for auto mesh roles
-	KtRole = "kt-role"
+	KtRole = "et-role"
 	// KtConfig annotation used for clean up context
-	KtConfig = "kt-config"
+	KtConfig = "et-config"
 	// KtUser annotation used for record independent username
-	KtUser = "kt-user"
+	KtUser = "et-user"
 	// KtSelector annotation used for record service origin selector
-	KtSelector = "kt-selector"
+	KtSelector = "et-selector"
 	// KtRefCount annotation used for count of shared pod / service
-	KtRefCount = "kt-ref-count"
+	KtRefCount = "et-ref-count"
 	// KtLastHeartBeat annotation used for timestamp of last heart beat
-	KtLastHeartBeat = "kt-last-heart-beat"
+	KtLastHeartBeat = "et-last-heart-beat"
 	// KtLock annotation used for avoid auto mesh conflict
-	KtLock = "kt-lock"
+	KtLock = "et-lock"
 
 	// PostfixRsaKey postfix of local private key name
 	PostfixRsaKey = ".key"
@@ -81,19 +90,19 @@ const (
 	// DefaultNamespace default namespace
 	DefaultNamespace = "default"
 	// KtExchangeContainer name of exchange ephemeral container
-	KtExchangeContainer = "kt-exchange"
+	KtExchangeContainer = "et-exchange"
 	// DefaultContainer default container name
 	DefaultContainer = "standalone"
 	// StuntmanServiceSuffix suffix of stuntman service name
-	StuntmanServiceSuffix = "-kt-stuntman"
+	StuntmanServiceSuffix = "-et-stuntman"
 	// RouterPodSuffix suffix of router pod name
-	RouterPodSuffix = "-kt-router"
+	RouterPodSuffix = "-et-router"
 	// ExchangePodInfix exchange pod name
-	ExchangePodInfix = "-kt-exchange-"
+	ExchangePodInfix = "-et-exchange-"
 	// MeshPodInfix mesh pod and mesh service name
-	MeshPodInfix = "-kt-mesh-"
+	MeshPodInfix = "-et-mesh-"
 	// RectifierPodPrefix rectifier pod name
-	RectifierPodPrefix = "kt-rectifier-"
+	RectifierPodPrefix = "et-rectifier-"
 	// RoleConnectShadow shadow role
 	RoleConnectShadow = "shadow-connect"
 	// RoleExchangeShadow shadow role
@@ -105,9 +114,9 @@ const (
 	// RoleRouter router role
 	RoleRouter = "router"
 	// TunNameWin tun device name in windows
-	TunNameWin = "KtConnectTunnel"
+	TunNameWin = "EtConnectTunnel"
 	// TunNameLinux tun device name in linux
-	TunNameLinux = "kt0"
+	TunNameLinux = "et0"
 	// TunNameMac tun device name in MacOS
 	TunNameMac = "utun"
 	// AlternativeDnsPort alternative port for local dns
@@ -117,14 +126,13 @@ const (
 	ResourceHeartBeatIntervalMinus = 2
 	// PortForwardHeartBeatIntervalSec interval of port-forward heart beat
 	PortForwardHeartBeatIntervalSec = 60
-
 )
 
 var (
-	KtHome = fmt.Sprintf("%s/.kt", UserHome)
-	KtKeyDir = fmt.Sprintf("%s/key", KtHome)
-	KtPidDir = fmt.Sprintf("%s/pid", KtHome)
-	KtLockDir = fmt.Sprintf("%s/lock", KtHome)
+	KtHome       = fmt.Sprintf("%s/.et", UserHome)
+	KtKeyDir     = fmt.Sprintf("%s/key", KtHome)
+	KtPidDir     = fmt.Sprintf("%s/pid", KtHome)
+	KtLockDir    = fmt.Sprintf("%s/lock", KtHome)
 	KtProfileDir = fmt.Sprintf("%s/profile", KtHome)
 	KtConfigFile = fmt.Sprintf("%s/config", KtHome)
 )

@@ -41,7 +41,7 @@ func IsProcessExist(pid int) bool {
 	if proc == nil || err != nil {
 		return false
 	}
-	return strings.Contains(proc.Executable(), "ktctl")
+	return strings.Contains(proc.Executable(), "et")
 }
 
 // CreateDirIfNotExist create dir
@@ -78,9 +78,9 @@ func watchPidFile(pidFile string, ch chan os.Signal) {
 
 	for event := range watcher.Events {
 		log.Debug().Msgf("Received event %s", event)
-		if event.Op & fs.Remove == fs.Remove || event.Op & fs.Rename == fs.Rename {
+		if event.Op&fs.Remove == fs.Remove || event.Op&fs.Rename == fs.Rename {
 			log.Info().Msgf("Pid file was removed")
-			ch <-os.Interrupt
+			ch <- os.Interrupt
 		}
 	}
 }

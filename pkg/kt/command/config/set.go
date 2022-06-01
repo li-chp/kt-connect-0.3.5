@@ -11,7 +11,7 @@ func Set(args []string) error {
 	}
 	config, err := loadConfig()
 	if err != nil {
-		return fmt.Errorf("config file is damaged, please try repair it or use 'ktctl config unset --all'")
+		return fmt.Errorf("config file is damaged, please try repair it or use 'et config unset --all'")
 	}
 	var key, value string
 	if len(args) == 1 {
@@ -24,7 +24,7 @@ func Set(args []string) error {
 	}
 	err = setConfigValue(config, key, value)
 	if err != nil {
-		return fmt.Errorf("%s, please check available config items with 'ktctl config show --all'", err)
+		return fmt.Errorf("%s, please check available config items with 'et config show --all'", err)
 	}
 	return saveConfig(config)
 }
@@ -37,7 +37,7 @@ func setConfigValue(config map[string]map[string]string, key string, value strin
 	if _, exist := config[group]; exist {
 		config[group][item] = value
 	} else {
-		config[group] = map[string]string { item: value }
+		config[group] = map[string]string{item: value}
 	}
 	return nil
 }

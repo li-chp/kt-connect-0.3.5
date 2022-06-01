@@ -13,18 +13,18 @@ import (
 // NewCleanCommand return new connect command
 func NewCleanCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "clean",
+		Use:   "clean",
 		Short: "Delete unavailing resources created by kt from kubernetes cluster",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) > 0 {
-				return fmt.Errorf("too many options specified (%s)", strings.Join(args, ",") )
+				return fmt.Errorf("too many options specified (%s)", strings.Join(args, ","))
 			}
 			return general.Prepare()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Clean()
 		},
-		Example: "ktctl clean [command options]",
+		Example: "et clean [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))
@@ -38,7 +38,7 @@ func Clean() error {
 		if resourceToClean, err := clean.CheckClusterResources(); err != nil {
 			log.Warn().Err(err).Msgf("Failed to clean up cluster resources")
 		} else if isEmpty(resourceToClean) {
-			log.Info().Msg("No unavailing kt resource found (^.^)YYa!!")
+			log.Info().Msg("No unavailing et resource found (^.^)YYa!!")
 		} else if opt.Get().Clean.DryRun {
 			clean.PrintClusterResourcesToClean(resourceToClean)
 		} else {

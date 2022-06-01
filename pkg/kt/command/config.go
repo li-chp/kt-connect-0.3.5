@@ -10,13 +10,13 @@ import (
 // NewConfigCommand return new config command
 func NewConfigCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "config",
+		Use:   "config",
 		Short: "List, get or set default value for command options",
 		RunE: func(cmd *cobra.Command, args []string) error {
 			opt.HideGlobalFlags(cmd)
 			return cmd.Help()
 		},
-		Example: "ktctl config <sub-command> [options]",
+		Example: "et config <sub-command> [options]",
 	}
 
 	cmd.AddCommand(general.SimpleSubCommand("show", "Show all available and configured options", config.Show, config.ShowHandle))

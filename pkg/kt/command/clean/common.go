@@ -6,7 +6,6 @@ import (
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/service/dns"
-	"github.com/alibaba/kt-connect/pkg/kt/service/tun"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
 	"github.com/rs/zerolog/log"
 	"io/ioutil"
@@ -24,16 +23,15 @@ type ResourceToClean struct {
 	DeploymentsToDelete []string
 	DeploymentsToScale  map[string]int32
 	ServicesToRecover   []string
-	ServicesToUnlock   []string
+	ServicesToUnlock    []string
 }
-
 
 func CheckClusterResources() (*ResourceToClean, error) {
 	pods, cfs, apps, svcs, err := cluster.Ins().GetKtResources(opt.Get().Global.Namespace)
 	if err != nil {
 		return nil, err
 	}
-	log.Debug().Msgf("Find %d kt pods", len(pods))
+	log.Debug().Msgf("Find %d et pods", len(pods))
 	resourceToClean := ResourceToClean{
 		PodsToDelete:        make([]string, 0),
 		ServicesToDelete:    make([]string, 0),
@@ -170,10 +168,10 @@ func TidyLocalResources() {
 			dns.DropHosts()
 			log.Debug().Msg("Cleaning DNS configuration")
 			dns.Ins().RestoreNameServer()
-			log.Info().Msgf("Cleaning route table")
-			if err := tun.Ins().RestoreRoute(); err != nil {
-				log.Warn().Err(err).Msgf("Unable to clean up route table")
-			}
+			//log.Info().Msgf("Cleaning route table")
+			//if err := tun.Ins().RestoreRoute(); err != nil {
+			//	log.Warn().Err(err).Msgf("Unable to clean up route table")
+			//}
 		} else {
 			log.Info().Msgf("Not %s user, DNS cleanup skipped", util.GetAdminUserName())
 		}
@@ -201,7 +199,7 @@ func parseComponentAndPid(pidFileName string) (string, int) {
 	startPos := strings.LastIndex(pidFileName, "-")
 	endPos := strings.Index(pidFileName, ".")
 	if startPos > 0 && endPos > startPos {
-		component := pidFileName[0 : startPos]
+		component := pidFileName[0:startPos]
 		pid, err := strconv.Atoi(pidFileName[startPos+1 : endPos])
 		if err != nil {
 			return "", -1
@@ -257,7 +255,7 @@ func analysisLockAndOrphanServices(svcs []coreV1.Service, resourceToClean *Resou
 		if svc.Annotations == nil {
 			continue
 		}
-		if lock, exists := svc.Annotations[util.KtLock]; exists && util.GetTime() - util.ParseTimestamp(lock) > general.LockTimeout {
+		if lock, exists := svc.Annotations[util.KtLock]; exists && util.GetTime()-util.ParseTimestamp(lock) > general.LockTimeout {
 			resourceToClean.ServicesToUnlock = append(resourceToClean.ServicesToUnlock, svc.Name)
 		}
 		if svc.Annotations[util.KtSelector] != "" {
@@ -314,6 +312,5 @@ func isRouterPodExist(svcName, namespace string) bool {
 }
 
 func isExpired(lastHeartBeat, cleanThresholdInMinus int64) bool {
-	return util.GetTime() - lastHeartBeat > cleanThresholdInMinus*60
+	return util.GetTime()-lastHeartBeat > cleanThresholdInMinus*60
 }
-

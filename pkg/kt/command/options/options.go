@@ -20,7 +20,7 @@ type ConnectOptions struct {
 	DnsCacheTtl      int
 	IncludeIps       string
 	ExcludeIps       string
-	Mode             string
+	ConnectMode      string
 	DnsMode          string
 	ShareShadow      bool
 	ClusterDomain    string
@@ -37,11 +37,19 @@ type ExchangeOptions struct {
 
 // MeshOptions ...
 type MeshOptions struct {
-	Mode             string
+	MeshMode         string
 	Expose           string
 	VersionMark      string
 	RouterImage      string
 	SkipPortChecking bool
+	VsName           string
+	DrName           string
+}
+
+// MeshDebugOptions ...
+type MeshDebugOptions struct {
+	ConnectOptions
+	MeshOptions
 }
 
 // RecoverOptions ...
@@ -50,8 +58,8 @@ type RecoverOptions struct {
 
 // PreviewOptions ...
 type PreviewOptions struct {
-	External bool
-	Expose   string
+	External         bool
+	Expose           string
 	SkipPortChecking bool
 }
 
@@ -90,14 +98,15 @@ type GlobalOptions struct {
 
 // DaemonOptions cli options
 type DaemonOptions struct {
-	Connect  *ConnectOptions
-	Exchange *ExchangeOptions
-	Mesh     *MeshOptions
-	Preview  *PreviewOptions
-	Recover  *RecoverOptions
-	Clean    *CleanOptions
-	Config   *ConfigOptions
-	Global   *GlobalOptions
+	Connect   *ConnectOptions
+	Exchange  *ExchangeOptions
+	Mesh      *MeshOptions
+	MeshDebug *MeshDebugOptions
+	Preview   *PreviewOptions
+	Recover   *RecoverOptions
+	Clean     *CleanOptions
+	Config    *ConfigOptions
+	Global    *GlobalOptions
 }
 
 var opt *DaemonOptions
@@ -106,14 +115,15 @@ var opt *DaemonOptions
 func Get() *DaemonOptions {
 	if opt == nil {
 		opt = &DaemonOptions{
-			Global:   &GlobalOptions{},
-			Connect:  &ConnectOptions{},
-			Exchange: &ExchangeOptions{},
-			Mesh:     &MeshOptions{},
-			Preview:  &PreviewOptions{},
-			Recover:  &RecoverOptions{},
-			Clean:    &CleanOptions{},
-			Config:   &ConfigOptions{},
+			Global:    &GlobalOptions{},
+			Connect:   &ConnectOptions{},
+			Exchange:  &ExchangeOptions{},
+			Mesh:      &MeshOptions{},
+			MeshDebug: &MeshDebugOptions{},
+			Preview:   &PreviewOptions{},
+			Recover:   &RecoverOptions{},
+			Clean:     &CleanOptions{},
+			Config:    &ConfigOptions{},
 		}
 		if customize, exist := GetCustomizeKtConfig(); exist {
 			mergeOptions(opt, []byte(customize))

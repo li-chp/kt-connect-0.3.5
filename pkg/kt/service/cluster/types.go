@@ -2,6 +2,8 @@ package cluster
 
 import (
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
+	v1alpha3 "istio.io/client-go/pkg/apis/networking/v1alpha3"
+	versionedclient "istio.io/client-go/pkg/clientset/versioned"
 	appV1 "k8s.io/api/apps/v1"
 	coreV1 "k8s.io/api/core/v1"
 	"k8s.io/client-go/kubernetes"
@@ -23,7 +25,7 @@ type KubernetesInterface interface {
 	ExecInPod(containerName, podName, namespace string, cmd ...string) (string, string, error)
 	AddEphemeralContainer(containerName, podName string, envs map[string]string) (string, error)
 	RemoveEphemeralContainer(containerName, podName string, namespace string) error
-	IncreasePodRef(name ,namespace string) error
+	IncreasePodRef(name, namespace string) error
 	DecreasePodRef(name, namespace string) (bool, error)
 
 	GetDeployment(name string, namespace string) (*appV1.Deployment, error)
@@ -31,7 +33,7 @@ type KubernetesInterface interface {
 	GetAllDeploymentInNamespace(namespace string) (*appV1.DeploymentList, error)
 	UpdateDeployment(deployment *appV1.Deployment) (*appV1.Deployment, error)
 	RemoveDeployment(name, namespace string) error
-	IncreaseDeploymentRef(name ,namespace string) error
+	IncreaseDeploymentRef(name, namespace string) error
 	DecreaseDeploymentRef(name, namespace string) (bool, error)
 	ScaleTo(deployment, namespace string, replicas *int32) (err error)
 
@@ -53,11 +55,18 @@ type KubernetesInterface interface {
 	GetKtResources(namespace string) ([]coreV1.Pod, []coreV1.ConfigMap, []appV1.Deployment, []coreV1.Service, error)
 	GetAllNamespaces() (*coreV1.NamespaceList, error)
 	ClusterCidrs(namespace string) (cidrs []string, err error)
+
+	GetVirtualServiceList(namespace string) (*v1alpha3.VirtualServiceList, error)
+	GetVirtualService(name, namespace string) (*v1alpha3.VirtualService, error)
+	GetDestinationRule(name, namespace string) (*v1alpha3.DestinationRule, error)
+	PatchVirtualService(name, service, namespace, op, meshKey, meshVersion string) (*v1alpha3.VirtualService, error)
+	PatchDestinationRule(name, namespace string, op, meshKey, meshVersion string) (*v1alpha3.DestinationRule, error)
 }
 
 // Kubernetes implements KubernetesInterface
 type Kubernetes struct {
-	Clientset kubernetes.Interface
+	Clientset   kubernetes.Interface
+	IstioClient versionedclient.Interface
 }
 
 // Cli the singleton type
@@ -67,7 +76,8 @@ var instance *Kubernetes
 func Ins() KubernetesInterface {
 	if instance == nil {
 		instance = &Kubernetes{
-			Clientset: opt.Store.Clientset,
+			Clientset:   opt.Store.Clientset,
+			IstioClient: opt.Store.IstioClient,
 		}
 	}
 	return instance

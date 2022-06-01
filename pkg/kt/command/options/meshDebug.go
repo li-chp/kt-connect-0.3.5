@@ -1,10 +1,11 @@
 package options
 
 import (
+	"fmt"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
 )
 
-func ConnectFlags() []OptionConfig {
+func MeshDebugFlags() []OptionConfig {
 	flags := []OptionConfig{
 		{
 			Target:       "ConnectMode",
@@ -65,6 +66,43 @@ func ConnectFlags() []OptionConfig {
 			Target:       "DnsCacheTtl",
 			DefaultValue: 60,
 			Description:  "(local dns mode only) DNS cache refresh interval in seconds",
+		},
+
+		{
+			Target:       "Expose",
+			DefaultValue: "",
+			Description:  "Ports to expose, use ',' separated, in [port] or [local:remote] format, e.g. 7001,8080:80",
+			Required:     true,
+		},
+		{
+			Target:       "MeshMode",
+			DefaultValue: util.MeshModeAuto,
+			Description:  "Mesh method 'auto' or 'manual'",
+		},
+		{
+			Target:       "VersionMark",
+			DefaultValue: "",
+			Description:  "Specify the version of mesh service, e.g. '0.0.1' or 'mark:local'",
+		},
+		{
+			Target:       "SkipPortChecking",
+			DefaultValue: false,
+			Description:  "Do not check whether specified local ports are listened",
+		},
+		{
+			Target:       "RouterImage",
+			DefaultValue: fmt.Sprintf("%s:v%s", util.ImageKtRouter, Store.Version),
+			Description:  "(auto method only) Customize router image",
+		},
+		{
+			Target:       "VsName",
+			DefaultValue: "",
+			Description:  "(manual method only) Specify istio VirtualService name, default same as service name",
+		},
+		{
+			Target:       "DrName",
+			DefaultValue: "",
+			Description:  "(manual method only) Specify istio DestinationRule name, default same as service name",
 		},
 	}
 	if util.IsMacos() {

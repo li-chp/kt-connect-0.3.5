@@ -6,7 +6,6 @@ import (
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/service/cluster"
 	"github.com/alibaba/kt-connect/pkg/kt/service/dns"
-	"github.com/alibaba/kt-connect/pkg/kt/service/tun"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
 	"github.com/rs/zerolog/log"
 	"os"
@@ -28,9 +27,27 @@ func CleanupWorkspace() {
 		recoverExchangedTarget()
 	} else if opt.Store.Component == util.ComponentMesh {
 		recoverAutoMeshRoute()
+		recoverIstio()
+	} else if opt.Store.Component == util.ComponentMeshDebug {
+		recoverGlobalHostsAndProxy()
+		recoverAutoMeshRoute()
+		recoverIstio()
 	}
 	cleanService()
 	cleanShadowPodAndConfigMap()
+}
+
+func recoverIstio() {
+	if opt.Store.VirtualServicePatch == true {
+		log.Info().Msgf("Cleaning VirtualService....")
+		cluster.Ins().PatchVirtualService(opt.Get().Mesh.VsName, "service",
+			opt.Get().Global.Namespace, "remove", "meshKey", "meshVersion")
+	}
+	if opt.Store.DestinationRulePatch == true {
+		log.Info().Msgf("Cleaning DestinationRule....")
+		cluster.Ins().PatchDestinationRule(opt.Get().Mesh.DrName, opt.Get().Global.Namespace,
+			"remove", "meshKey", "meshVersion")
+	}
 }
 
 func recoverGlobalHostsAndProxy() {
@@ -39,11 +56,12 @@ func recoverGlobalHostsAndProxy() {
 		log.Debug().Msg("Dropping hosts records ...")
 		dns.DropHosts()
 	}
-	if strings.HasPrefix(opt.Get().Connect.DnsMode, util.DnsModeLocalDns) {
-		if err := tun.Ins().RestoreRoute(); err != nil {
-			log.Debug().Err(err).Msgf("Failed to restore route table")
-		}
-	}
+	//edit by lichp
+	//if strings.HasPrefix(opt.Get().Connect.DnsMode, util.DnsModeLocalDns) {
+	//	if err := tun.Ins().RestoreRoute(); err != nil {
+	//		log.Debug().Err(err).Msgf("Failed to restore route table")
+	//	}
+	//}
 }
 
 func cleanLocalFiles() {

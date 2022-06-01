@@ -14,20 +14,20 @@ import (
 // NewExchangeCommand return new exchange command
 func NewExchangeCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:  "exchange",
+		Use:   "exchange",
 		Short: "Redirect all requests of specified kubernetes service to local",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of service to exchange is required")
 			} else if len(args) > 1 {
-				return fmt.Errorf("too many service name are spcified (%s), should be one", strings.Join(args, ",") )
+				return fmt.Errorf("too many service name are spcified (%s), should be one", strings.Join(args, ","))
 			}
 			return general.Prepare()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
 			return Exchange(args[0])
 		},
-		Example: "ktctl exchange <service-name> [command options]",
+		Example: "et exchange <service-name> [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))

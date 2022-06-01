@@ -21,12 +21,12 @@ func Show(args []string) error {
 	customConfig := loadCustomConfig()
 	config, err := loadConfig()
 	if err != nil {
-		return fmt.Errorf("config file is damaged, please try repair it or use 'ktctl config unset --all'")
+		return fmt.Errorf("config file is damaged, please try repair it or use 'et config unset --all'")
 	}
 	for i := 0; i < reflect.TypeOf(opt.DaemonOptions{}).NumField(); i++ {
 		group := reflect.TypeOf(opt.DaemonOptions{}).Field(i)
 		groupName := util.DashSeparated(group.Name)
-		for j := 0; j < group.Type.Elem().NumField(); j ++ {
+		for j := 0; j < group.Type.Elem().NumField(); j++ {
 			item := group.Type.Elem().Field(j)
 			itemName := util.DashSeparated(item.Name)
 			if util.Contains(hiddenOptions, fmt.Sprintf("%s.%s", groupName, itemName)) {
