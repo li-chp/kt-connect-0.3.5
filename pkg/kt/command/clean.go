@@ -14,7 +14,7 @@ import (
 func NewCleanCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "clean",
-		Short: "Delete unavailing resources created by kt from kubernetes cluster",
+		Short: "Delete unavailing resources created by et from kubernetes cluster",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) > 0 {
 				return fmt.Errorf("too many options specified (%s)", strings.Join(args, ","))

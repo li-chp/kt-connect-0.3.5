@@ -10,9 +10,9 @@ import (
 )
 
 type RouteRecord struct {
-	TargetRange string
+	TargetRange    string
 	InterfaceIndex string
-	InterfaceName string
+	InterfaceName  string
 }
 
 // CheckContext check everything needed for tun setup
@@ -194,7 +194,7 @@ func getInterfaceIndex(s *Cli) (string, []string, error) {
 		if !reachRecord {
 			continue
 		}
-		idx := strings.SplitN(strings.TrimPrefix(line, " "), " ", 2)[0]
+		idx := strings.SplitN(strings.TrimLeft(line, " "), " ", 2)[0]
 		if strings.HasSuffix(line, s.GetName()) {
 			ktIdx = idx
 		} else {
@@ -253,9 +253,9 @@ func getKtRouteRecords(s *Cli) ([]RouteRecord, error) {
 			continue
 		}
 		records = append(records, RouteRecord{
-			TargetRange: ipRange,
+			TargetRange:    ipRange,
 			InterfaceIndex: idx,
-			InterfaceName: iface,
+			InterfaceName:  iface,
 		})
 	}
 	return records, nil
