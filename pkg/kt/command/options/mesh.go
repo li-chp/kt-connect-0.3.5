@@ -17,6 +17,7 @@ func MeshFlags() []OptionConfig {
 			Target:       "MeshMode",
 			DefaultValue: util.MeshModeAuto,
 			Description:  "Mesh method 'auto' or 'manual'",
+			Hidden:       true,
 		},
 		{
 			Target:       "VersionMark",
@@ -31,19 +32,17 @@ func MeshFlags() []OptionConfig {
 		{
 			Target:       "RouterImage",
 			DefaultValue: fmt.Sprintf("%s:v%s", util.ImageKtRouter, Store.Version),
-			Description:  "(auto method only) Customize router image",
+			Description:  "(amesh only) Customize router image",
 		},
 		{
 			Target:       "VsName",
 			DefaultValue: "",
-			Description:  "(manual method only) Specify istio VirtualService name, default same as service name",
-			Required:     false,
+			Description:  "(imesh only) Specify istio VirtualService name, default same as service name",
 		},
 		{
 			Target:       "DrName",
 			DefaultValue: "",
-			Description:  "(manual method only) Specify istio DestinationRule name, default same as service name",
-			Required:     false,
+			Description:  "(imesh only) Specify istio DestinationRule name, default same as service name",
 		},
 	}
 	return flags

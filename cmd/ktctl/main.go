@@ -44,13 +44,17 @@ func main() {
 	}
 
 	rootCmd.AddCommand(command.NewConnectCommand())
-	rootCmd.AddCommand(command.NewExchangeCommand())
-	rootCmd.AddCommand(command.NewMeshCommand())
-	rootCmd.AddCommand(command.NewMeshDebugCommand())
-	rootCmd.AddCommand(command.NewPreviewCommand())
+	//rootCmd.AddCommand(command.NewExchangeCommand())
+	//rootCmd.AddCommand(command.NewMeshCommand())
+	rootCmd.AddCommand(command.NewAMeshCommand())
+	rootCmd.AddCommand(command.NewIMeshCommand())
+	//rootCmd.AddCommand(command.NewMeshDebugCommand())
+	rootCmd.AddCommand(command.NewAMeshDebugCommand())
+	rootCmd.AddCommand(command.NewIMeshDebugCommand())
+	//rootCmd.AddCommand(command.NewPreviewCommand())
 	rootCmd.AddCommand(command.NewRecoverCommand())
 	rootCmd.AddCommand(command.NewCleanCommand())
-	rootCmd.AddCommand(command.NewConfigCommand())
+	//rootCmd.AddCommand(command.NewConfigCommand())
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(general.UsageTemplate(false))
 	rootCmd.SilenceUsage = true

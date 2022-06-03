@@ -19,7 +19,7 @@ import (
 func NewRecoverCommand() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "recover",
-		Short: "Restore traffic of specified kubernetes service changed by exchange or mesh",
+		Short: "Restore traffic of specified kubernetes service changed by mesh",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
 				return fmt.Errorf("name of service to recover is required")
