@@ -13,7 +13,7 @@ func ConnectFlags() []OptionConfig {
 		},
 		{
 			Target:       "DnsMode",
-			DefaultValue: util.DnsModeLocalDns,
+			DefaultValue: util.DnsModeHosts,
 			Description:  "Specify how to resolve service domains, can be 'localDNS', 'podDNS', 'hosts' or 'hosts:<namespaces>', for multiple namespaces use ',' separation",
 		},
 		{

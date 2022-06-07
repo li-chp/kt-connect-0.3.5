@@ -60,7 +60,7 @@ func CheckClusterResources() (*ResourceToClean, error) {
 }
 
 func TidyClusterResources(r *ResourceToClean) {
-	log.Info().Msgf("Deleting %d unavailing kt pods", len(r.PodsToDelete))
+	log.Info().Msgf("Deleting %d unavailing et pods", len(r.PodsToDelete))
 	for _, name := range r.PodsToDelete {
 		err := cluster.Ins().RemovePod(name, opt.Get().Global.Namespace)
 		if err != nil {

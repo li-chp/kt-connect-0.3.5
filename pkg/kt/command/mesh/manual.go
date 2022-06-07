@@ -16,8 +16,8 @@ func ManualMesh(svc *coreV1.Service) error {
 	drName := opt.Get().Mesh.DrName
 	if drName == "" {
 		drName = service
+		opt.Get().Mesh.DrName = service
 	}
-	opt.Get().Mesh.DrName = service
 	vsName := opt.Get().Mesh.VsName
 	if vsName == "" {
 		vsName = service

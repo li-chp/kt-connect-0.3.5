@@ -57,7 +57,6 @@ func recoverGlobalHostsAndProxy() {
 		log.Debug().Msg("Dropping hosts records ...")
 		dns.DropHosts()
 	}
-	//edit by lichp
 	if strings.HasPrefix(opt.Get().Connect.DnsMode, util.DnsModeLocalDns) {
 		if err := tun.Ins().RestoreRoute(); err != nil {
 			log.Debug().Err(err).Msgf("Failed to restore route table")
