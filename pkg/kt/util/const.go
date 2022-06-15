@@ -27,11 +27,17 @@ const (
 	//ImageKtNavigator = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-navigator"
 
 	// ImageKtShadow default shadow image
-	ImageKtShadow = "10.10.125.67/et/et-connect-shadow"
+	//ImageKtShadow = "10.10.125.67/et/et-connect-shadow"
+	//// ImageKtRouter default router image
+	//ImageKtRouter = "10.10.125.67/et/et-connect-router"
+	//// ImageKtNavigator default navigator image
+	//ImageKtNavigator = "10.10.125.67/et/et-connect-navigator"
+	// ImageKtShadow default shadow image
+	ImageKtShadow = "10.160.22.6:8036/et-connect-shadow"
 	// ImageKtRouter default router image
-	ImageKtRouter = "10.10.125.67/et/et-connect-router"
+	ImageKtRouter = "10.160.22.6:8036/et-connect-router"
 	// ImageKtNavigator default navigator image
-	ImageKtNavigator = "10.10.125.67/et/et-connect-navigator"
+	ImageKtNavigator = "10.160.22.6:8036/et-connect-navigator"
 
 	// ConnectModeShuttle sshuttle mode
 	ConnectModeShuttle = "sshuttle"
