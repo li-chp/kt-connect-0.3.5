@@ -44,7 +44,8 @@ func main() {
 	}
 
 	rootCmd.AddCommand(command.NewConnectCommand())
-	//rootCmd.AddCommand(command.NewExchangeCommand())
+	rootCmd.AddCommand(command.NewExchangeCommand())
+	rootCmd.AddCommand(command.NewExchangeDebugCommand())
 	//rootCmd.AddCommand(command.NewMeshCommand())
 	rootCmd.AddCommand(command.NewAMeshCommand())
 	rootCmd.AddCommand(command.NewIMeshCommand())
@@ -54,6 +55,7 @@ func main() {
 	//rootCmd.AddCommand(command.NewPreviewCommand())
 	rootCmd.AddCommand(command.NewRecoverCommand())
 	rootCmd.AddCommand(command.NewCleanCommand())
+	rootCmd.AddCommand(command.NewUpgradeCommand())
 	//rootCmd.AddCommand(command.NewConfigCommand())
 	rootCmd.SetHelpCommand(&cobra.Command{Hidden: true})
 	rootCmd.SetUsageTemplate(general.UsageTemplate(false))

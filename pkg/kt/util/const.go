@@ -12,12 +12,16 @@ const (
 	ComponentConnect = "connect"
 	// ComponentExchange exchange command
 	ComponentExchange = "exchange"
+	// ComponentExchange exchange command
+	ComponentExchangeDebug = "exchangeDebug"
 	// ComponentMesh mesh command
 	ComponentMesh = "mesh"
 	// ComponentMesh mesh command
 	ComponentMeshDebug = "meshDebug"
 	// ComponentPreview preview command
 	ComponentPreview = "preview"
+	// ComponentPreview preview command
+	ComponentUpgrade = "upgrade"
 
 	//// ImageKtShadow default shadow image
 	//ImageKtShadow = "registry.cn-hangzhou.aliyuncs.com/rdc-incubator/kt-connect-shadow"
@@ -38,6 +42,8 @@ const (
 	ImageKtRouter = "10.160.22.6:8036/et-connect-router"
 	// ImageKtNavigator default navigator image
 	ImageKtNavigator = "10.160.22.6:8036/et-connect-navigator"
+	// ImageKtNavigator default navigator image
+	UpgradeServerUrl = "http://10.10.125.89/et-release"
 
 	// ConnectModeShuttle sshuttle mode
 	ConnectModeShuttle = "sshuttle"

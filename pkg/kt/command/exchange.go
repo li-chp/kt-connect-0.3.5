@@ -48,15 +48,15 @@ func Exchange(resourceName string) error {
 		}
 	}
 
-	log.Info().Msgf("Using %s mode", opt.Get().Exchange.Mode)
-	if opt.Get().Exchange.Mode == util.ExchangeModeScale {
+	log.Info().Msgf("Using %s mode", opt.Get().Exchange.ExchangeMode)
+	if opt.Get().Exchange.ExchangeMode == util.ExchangeModeScale {
 		err = exchange.ByScale(resourceName)
-	} else if opt.Get().Exchange.Mode == util.ExchangeModeEphemeral {
+	} else if opt.Get().Exchange.ExchangeMode == util.ExchangeModeEphemeral {
 		err = exchange.ByEphemeralContainer(resourceName)
-	} else if opt.Get().Exchange.Mode == util.ExchangeModeSelector {
+	} else if opt.Get().Exchange.ExchangeMode == util.ExchangeModeSelector {
 		err = exchange.BySelector(resourceName)
 	} else {
-		err = fmt.Errorf("invalid exchange method '%s', supportted are %s, %s, %s", opt.Get().Exchange.Mode,
+		err = fmt.Errorf("invalid exchange method '%s', supportted are %s, %s, %s", opt.Get().Exchange.ExchangeMode,
 			util.ExchangeModeSelector, util.ExchangeModeScale, util.ExchangeModeEphemeral)
 	}
 	if err != nil {

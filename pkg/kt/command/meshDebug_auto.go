@@ -38,9 +38,6 @@ func NewAMeshDebugCommand() *cobra.Command {
 
 //Mesh exchange kubernetes workload
 func AMeshDebug(resourceName string) error {
-	o := opt.Get()
-	fmt.Sprint(o)
-
 	*opt.Get().Connect = opt.Get().MeshDebug.ConnectOptions
 	*opt.Get().Mesh = opt.Get().MeshDebug.MeshOptions
 	ch, err := general.SetupProcess(util.ComponentMeshDebug)

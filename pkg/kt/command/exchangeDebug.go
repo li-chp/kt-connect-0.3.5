@@ -3,8 +3,8 @@ package command
 import (
 	"fmt"
 	"github.com/alibaba/kt-connect/pkg/kt/command/connect"
+	"github.com/alibaba/kt-connect/pkg/kt/command/exchange"
 	"github.com/alibaba/kt-connect/pkg/kt/command/general"
-	"github.com/alibaba/kt-connect/pkg/kt/command/mesh"
 	opt "github.com/alibaba/kt-connect/pkg/kt/command/options"
 	"github.com/alibaba/kt-connect/pkg/kt/util"
 	"github.com/rs/zerolog/log"
@@ -12,35 +12,35 @@ import (
 	"strings"
 )
 
-// NewMeshDebugCommand return new mesh command
-func NewIMeshDebugCommand() *cobra.Command {
+// NewExchangeCommand return new exchange command
+func NewExchangeDebugCommand() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "idebug",
-		Short: "Combines connect and imesh together, idebug is only compatible for istio ",
+		Use:   "edebug",
+		Short: "Combines connect and exchange together",
 		PreRunE: func(cmd *cobra.Command, args []string) error {
 			if len(args) == 0 {
-				return fmt.Errorf("name of service to mesh is required")
+				return fmt.Errorf("name of service to exchange is required")
 			} else if len(args) > 1 {
 				return fmt.Errorf("too many service name are spcified (%s), should be one", strings.Join(args, ","))
 			}
 			return general.Prepare()
 		},
 		RunE: func(cmd *cobra.Command, args []string) error {
-			return IMeshDebug(args[0])
+			return ExchangeDebug(args[0])
 		},
-		Example: "et idebug <service-name> [command options]",
+		Example: "et edebug <service-name> [command options]",
 	}
 
 	cmd.SetUsageTemplate(general.UsageTemplate(true))
-	opt.SetOptions(cmd, cmd.Flags(), opt.Get().MeshDebug, opt.MeshDebugFlags())
+	opt.SetOptions(cmd, cmd.Flags(), opt.Get().ExchangeDebug, opt.ExchangeDebugFlags())
 	return cmd
 }
 
-//Mesh exchange kubernetes workload
-func IMeshDebug(resourceName string) error {
-	*opt.Get().Connect = opt.Get().MeshDebug.ConnectOptions
-	*opt.Get().Mesh = opt.Get().MeshDebug.MeshOptions
-	ch, err := general.SetupProcess(util.ComponentMeshDebug)
+//Exchange exchange kubernetes workload
+func ExchangeDebug(resourceName string) error {
+	*opt.Get().Connect = opt.Get().ExchangeDebug.ConnectOptions
+	*opt.Get().Exchange = opt.Get().ExchangeDebug.ExchangeOptions
+	ch, err := general.SetupProcess(util.ComponentExchangeDebug)
 	if err != nil {
 		return err
 	}
@@ -64,34 +64,30 @@ func IMeshDebug(resourceName string) error {
 	log.Info().Msgf(" All looks good, now you can access to resources in the kubernetes cluster")
 	log.Info().Msg("---------------------------------------------------------------")
 
-	if opt.Get().Mesh.SkipPortChecking {
-		if port := util.FindBrokenLocalPort(opt.Get().Mesh.Expose); port != "" {
+	if opt.Get().Exchange.SkipPortChecking {
+		if port := util.FindBrokenLocalPort(opt.Get().Exchange.Expose); port != "" {
 			return fmt.Errorf("no application is running on port %s", port)
 		}
 	}
 
-	// Get service to mesh
-	svc, err := general.GetServiceByResourceName(resourceName, opt.Get().Global.Namespace)
+	log.Info().Msgf("Using %s mode", opt.Get().Exchange.ExchangeMode)
+	if opt.Get().Exchange.ExchangeMode == util.ExchangeModeScale {
+		err = exchange.ByScale(resourceName)
+	} else if opt.Get().Exchange.ExchangeMode == util.ExchangeModeEphemeral {
+		err = exchange.ByEphemeralContainer(resourceName)
+	} else if opt.Get().Exchange.ExchangeMode == util.ExchangeModeSelector {
+		err = exchange.BySelector(resourceName)
+	} else {
+		err = fmt.Errorf("invalid exchange method '%s', supportted are %s, %s, %s", opt.Get().Exchange.ExchangeMode,
+			util.ExchangeModeSelector, util.ExchangeModeScale, util.ExchangeModeEphemeral)
+	}
 	if err != nil {
 		return err
 	}
-
-	if port := util.FindInvalidRemotePort(opt.Get().Mesh.Expose, general.GetTargetPorts(svc)); port != "" {
-		return fmt.Errorf("target port %s not exists in service %s", port, svc.Name)
-	}
-
-	//log.Info().Msgf("Using %s mode", opt.Get().Mesh.MeshMode)
-	//if opt.Get().Mesh.MeshMode == util.MeshModeManual {
-	err = mesh.ManualMesh(svc)
-	//} else if opt.Get().Mesh.MeshMode == util.MeshModeAuto {
-	//	err = mesh.AutoMesh(svc)
-	//} else {
-	//	err = fmt.Errorf("invalid mesh method '%s', supportted are %s, %s", opt.Get().Mesh.MeshMode,
-	//		util.MeshModeAuto, util.MeshModeManual)
-	//}
-	if err != nil {
-		return err
-	}
+	resourceType, realName := toTypeAndName(resourceName)
+	log.Info().Msg("---------------------------------------------------------------")
+	log.Info().Msgf(" Now all request to %s '%s' will be redirected to local", resourceType, realName)
+	log.Info().Msg("---------------------------------------------------------------")
 
 	// watch background process, clean the workspace and exit if background process occur exception
 	s := <-ch
