@@ -91,7 +91,7 @@ func DownloadAndRename(serverUrl, userSelectVersion string) error {
 		return err
 	}
 
-	base := os.Args[0]
+	base := os.Getenv("ET_HOME") + "\\et.exe"
 	out, err := os.Create(base + ".temp")
 	if err != nil {
 		return err
