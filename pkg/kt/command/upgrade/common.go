@@ -34,7 +34,7 @@ func Handle(serverUrl, currentVersion string) error {
 	// 用户选择版本
 	userSelectVersion := ""
 	for {
-		fmt.Println("You have installed et-" + currentVersion + ",please choose version upgrade:\n" + strings.Join(forwardVersion, "\n"))
+		fmt.Println("You have installed et-" + currentVersion + ", please choose version upgrade:\n" + strings.Join(forwardVersion, "\n"))
 		fmt.Print("Input version(default:" + forwardVersion[len(forwardVersion)-1] + "):")
 		fmt.Scanln(&userSelectVersion)
 
@@ -45,6 +45,7 @@ func Handle(serverUrl, currentVersion string) error {
 		} else {
 			if !IsContainInArray(userSelectVersion, forwardVersion) {
 				fmt.Println("Warning: You entered a wrong version!!!")
+				userSelectVersion = ""
 			} else {
 				break
 			}

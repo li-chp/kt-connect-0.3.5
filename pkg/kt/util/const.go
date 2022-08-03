@@ -43,7 +43,7 @@ const (
 	// ImageKtNavigator default navigator image
 	ImageKtNavigator = "10.160.22.6:8036/et-connect-navigator"
 	// ImageKtNavigator default navigator image
-	UpgradeServerUrl = "http://10.10.125.89/et-release"
+	UpgradeServerUrl = "http://10.160.22.194/et-release"
 
 	// ConnectModeShuttle sshuttle mode
 	ConnectModeShuttle = "sshuttle"

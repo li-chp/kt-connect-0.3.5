@@ -33,6 +33,9 @@ func CleanupWorkspace() {
 		recoverGlobalHostsAndProxy()
 		recoverAutoMeshRoute()
 		recoverIstio()
+	} else if opt.Store.Component == util.ComponentExchangeDebug {
+		recoverGlobalHostsAndProxy()
+		recoverExchangedTarget()
 	}
 	cleanService()
 	cleanShadowPodAndConfigMap()
